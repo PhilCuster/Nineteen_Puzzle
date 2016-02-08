@@ -1,5 +1,3 @@
-import java.util.*;
-
 
 public class State {
 	private int[][] board; // -1's represent unaddressable space.

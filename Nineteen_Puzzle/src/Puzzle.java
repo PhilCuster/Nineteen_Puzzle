@@ -7,45 +7,27 @@ public class Puzzle {
 
     public static HashMap coordBank = new HashMap(19);
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 
-		
-//		ArrayList<Node> open = new ArrayList<Node>(); //  Nodes that need to be evaluated.
-//		ArrayList<Node> closed = new ArrayList<Node>(); // Nodes that have already been evaluated.
+        // Input the starting state from the user.
+        String[] strArray;
+        int[][] startState = new int[6][6];
+        System.out.println("Enter the starting state with commas between squares and whitespace for blanks:");
+        Scanner sc = new Scanner(System.in);
+        for(int read = 0; read < 6; read++) {
+            strArray = sc.nextLine().split(",");
+            for(int p = 0; p < strArray.length; p++) {
+                if(strArray[p].equals(" ")) {
+                    startState[read][p] = -1;
+                }
+                else {
+                    startState[read][p] = Integer.parseInt(strArray[p]);
+                }
+            }
+        }
 
-		/*
-		// First, we need to input the game's starting state.
-		ArrayList<Integer> input = new ArrayList<Integer>();
-		BufferedReader standardInput = new BufferedReader(new InputStreamReader(System.in));
-		System.out.flush();
-		for(int i = 0; i < 6; i++) {
-			//Read in a line of input.
-			String inputLine = standardInput.readLine();
-			String[] chars = inputLine.split(" ", -1);
-			System.out.println(Arrays.toString(chars));
-			for (int j = 0; j < chars.length; j += 2) {
-				int temp;
-				if (chars[j].isEmpty()) {
-					temp = -1;
-				}
-				else {
-					temp = Integer.parseInt(chars[j]);
-				}
-				
-				input.add(temp);
-			}
-			
-		}
 
-		*/
-
-		// Now we create a node with a state that is the starting state.
-//		open.get(0).getState().printBoard();
 
         // Hard coded final state.
         int[][] finalStateArray = new int[][]{
@@ -68,20 +50,9 @@ public class Puzzle {
         }
         State finalState = new State(finalStateArray);
 
-
-		// For now we can just hard code the start state.
-		int[][] startState = new int[][]{
-                {-1, -1, 2, 1, -1, -1},
-                {-1, -1, 6, 0, -1, -1},
-                {4, 5, 7, 3, 8, 9},
-                {10, 11, 12, 13, 14, 15},
-                {-1, -1, 16, 17, -1, -1},
-                {-1, -1, 18, 19, -1, -1}
-        };
         Node startNode = new Node(new State(startState),0,null);
         System.out.println("Start state: ");
         startNode.getState().printBoard();
-//        System.out.println(startNode.getState().getH());
 
         // Create the HashMap
         HashMap hashStates = new HashMap();
@@ -96,22 +67,12 @@ public class Puzzle {
         // Add the start node to the queue.
         queue.add(startNode);
 
-        int iteration = 1;
-        int maxG = 0;
-        System.out.println("Current depth: " + maxG);
-
         // While the queue is not empty.
         while(!queue.isEmpty()) {
-//            System.out.println("Iteration number " + iteration);
-
-            iteration++;
-//            System.out.println("Checking a new node!");
             // Set node with lowest f_score to current.
             Node current_node = queue.remove();
-//            current_node.getState().printBoard();
 
             if(current_node.explored) {
-//                System.out.println("-------------------------------------------");
                 continue;
             }
 
@@ -135,11 +96,6 @@ public class Puzzle {
 
             // Mark the current node as explored.
             current_node.explored = true;
-
-            if(current_node.getG() > maxG) {
-                maxG = current_node.getG();
-                System.out.println("Current depth: " + maxG);
-            }
 
             // Generate the neighbor nodes of the current node.
             // First, generate all the possible moves, returns an array of states.
@@ -182,5 +138,4 @@ public class Puzzle {
             curNode.getState().printBoard();
         }
     }
-
 }

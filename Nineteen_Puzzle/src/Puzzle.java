@@ -19,14 +19,7 @@ public class Puzzle {
         for(int read = 0; read < 6; read++) {
             strArray = sc.nextLine().split(" ");
             for(int p = 0; p < strArray.length; p++) {
-                /*
-                if(strArray[p].equals(" ")) {
-                    startState[read][p] = -1;
-                }
-                */
-//                else {
                     startState[read][p] = Integer.parseInt(strArray[p]);
-//                }
             }
         }
 
@@ -81,6 +74,7 @@ public class Puzzle {
 
             // If the current node is the goal than reconstruct the path.
             if(current_node.getState().getH() == 0) {
+                int moveCount = 0;
                 while(true) {
                     if(current_node.getParentNode() == null) {
                         break;
@@ -93,8 +87,10 @@ public class Puzzle {
                 for(Node curNode: finalPath) {
                     curNode.getState().printBoard();
                     System.out.println();
+                    moveCount++;
                 }
-                System.out.println(nodeCount);
+                System.out.println("Nodes generated: " + nodeCount);
+                System.out.println("Moves required: " + moveCount);
                 return ;
             }
 

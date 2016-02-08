@@ -94,6 +94,7 @@ public class Puzzle {
                     curNode.getState().printBoard();
                     System.out.println();
                 }
+                System.out.println(nodeCount);
                 return ;
             }
 
@@ -127,7 +128,9 @@ public class Puzzle {
                     }
                     else {
                         // It has not been explored yet, create a new node, adding it to the queue.
-                        queue.add(new Node(newStates[count], current_node.getG() + 1, current_node));
+                        Node newNode = new Node(newStates[count], current_node.getG() + 1, current_node);
+                        queue.add(newNode);
+                        hashStates.put(newStates[count], newNode);
                         updateCount();
                     }
                 }

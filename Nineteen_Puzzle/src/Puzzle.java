@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Puzzle {
 
+    public static int nodeCount = 0;
 
     public static HashMap coordBank = new HashMap(19);
 
@@ -16,14 +17,16 @@ public class Puzzle {
         System.out.println("Enter the starting state with commas between squares and whitespace for blanks:");
         Scanner sc = new Scanner(System.in);
         for(int read = 0; read < 6; read++) {
-            strArray = sc.nextLine().split(",");
+            strArray = sc.nextLine().split(" ");
             for(int p = 0; p < strArray.length; p++) {
+                /*
                 if(strArray[p].equals(" ")) {
                     startState[read][p] = -1;
                 }
-                else {
+                */
+//                else {
                     startState[read][p] = Integer.parseInt(strArray[p]);
-                }
+//                }
             }
         }
 
@@ -48,7 +51,6 @@ public class Puzzle {
                 }
             }
         }
-        State finalState = new State(finalStateArray);
 
         Node startNode = new Node(new State(startState),0,null);
         System.out.println("Start state: ");
@@ -66,6 +68,7 @@ public class Puzzle {
 
         // Add the start node to the queue.
         queue.add(startNode);
+        updateCount();
 
         // While the queue is not empty.
         while(!queue.isEmpty()) {
@@ -77,7 +80,7 @@ public class Puzzle {
             }
 
             // If the current node is the goal than reconstruct the path.
-            if(Arrays.deepEquals(current_node.getState().getBoard(), finalState.getBoard())) {
+            if(current_node.getState().getH() == 0) {
                 while(true) {
                     if(current_node.getParentNode() == null) {
                         break;
@@ -100,13 +103,11 @@ public class Puzzle {
             // Generate the neighbor nodes of the current node.
             // First, generate all the possible moves, returns an array of states.
             State[] newStates = current_node.generateMoves();
-//            System.out.println("New moves generated!");
 
             // Iterate through the neighbors.
             int count = 0;
             while(count < 4) {
                 if(newStates[count] != null) {
-//                    System.out.println("Checking neighbor: " + count);
                     // First we check if it already exists.
                     Node neighbor = (Node) hashStates.get(newStates[count]);
                     if (neighbor != null) {
@@ -127,15 +128,20 @@ public class Puzzle {
                     else {
                         // It has not been explored yet, create a new node, adding it to the queue.
                         queue.add(new Node(newStates[count], current_node.getG() + 1, current_node));
+                        updateCount();
                     }
                 }
                 count++;
             }
-//            System.out.println("-------------------------------------------");
         }
 
-        for(Node curNode: finalPath) {
-            curNode.getState().printBoard();
+        System.out.println("Solution not found...\n");
+    }
+
+    private static void updateCount() {
+        nodeCount++;
+        if(nodeCount % 50000 == 0) {
+            System.out.println(nodeCount);
         }
     }
 }

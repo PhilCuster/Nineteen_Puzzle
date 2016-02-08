@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class State {
 	private int[][] board; // -1's represent unaddressable space.
@@ -59,4 +60,14 @@ public class State {
         return h;
     }
 
+	public boolean equals(Object o) {
+        if(Arrays.deepEquals(board, ((State)o).getBoard())) {
+            return true;
+        }
+        else return false;
+    }
+
+    public int hashCode() {
+        return Arrays.deepHashCode(board);
+    }
 }

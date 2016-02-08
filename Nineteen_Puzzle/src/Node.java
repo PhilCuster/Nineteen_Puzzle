@@ -69,7 +69,6 @@ public class Node implements Denumerable, Comparable<Node> {
 				if(state.getBoard()[k][l] == 0) {
 					blankX = k;
 					blankY = l;
-//                    System.out.println("Blank is at: " + blankX + ", " + blankY);
 				}
 			}
 		}
@@ -78,7 +77,6 @@ public class Node implements Denumerable, Comparable<Node> {
 		for(int i = -1; i < 2; i++) {
 			for(int j = -1; j < 2; j++) {
                 newboard = copyState(state.getBoard());
-//                newboard = state.getBoard().clone();
 				if (Math.abs(i) == Math.abs(j)) {
 					continue;
 				}
@@ -93,10 +91,8 @@ public class Node implements Denumerable, Comparable<Node> {
                     count++;
 					continue;
 				}
-//                System.out.println("Swapping blank with: " + temp);
 				newboard[blankX+i][blankY+j] = 0;
 				newboard[blankX][blankY] = temp;
-//                new State(newboard).printBoard();
 
 				// Generate a new state.
 				states[count] = new State(newboard);
